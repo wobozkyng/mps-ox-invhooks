@@ -8,6 +8,7 @@ version "0.0.0"
 
 server_scripts {
 	"@ox_lib/init.lua",
+	"server/utils.lua",
 	"server/hooks/*.lua",
 	"server/init.lua",
 }
