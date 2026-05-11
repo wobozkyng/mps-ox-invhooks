@@ -45,3 +45,28 @@ AddEventHandler('onResourceStop', function (resource)
 		RemoveEventHandler(listener)
 	end
 end)
+
+---checks if ox inventory is the minimum required version to function properly
+---@return boolean
+function IsInventoryMinimumVersion()
+    local version = GetResourceMetadata('ox_inventory', 'version', 0)
+    if not version then return false end
+
+    local major, minor, patch = version:match("^(%d+)%.(%d+)%.(%d+)$")
+    major, minor, patch = tonumber(major), tonumber(minor), tonumber(patch)
+
+    if not major or not minor or not patch then return false end
+
+    if major > 2 then return true end
+    if major < 2 then return false end
+
+    if minor > 46 then return true end
+    if minor < 46 then return false end
+
+    return patch >= 2
+end
+
+if not IsInventoryMinimumVersion() then
+    lib.print.warn('Invalid ox_inventory version!')
+    lib.print.warn('Update to v2.46.2+ ASAP to avoid conflicts.')
+end
