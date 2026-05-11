@@ -1,5 +1,7 @@
 # Ox Inventory Hooks
 
+  ![](https://img.shields.io/github/downloads/Maximus7474/mps-ox-invhooks/total?logo=github)
+
 A collection of server-side hooks that modify item behavior during inventory transfers within `ox_inventory`.
 
 > [!IMPORTANT]
