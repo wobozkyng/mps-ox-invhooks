@@ -46,7 +46,7 @@ AddEventHandler('onResourceStop', function (resource)
 	end
 end)
 
----checks if ox inventory is the minimum required version to function properly
+---checks if ox inventory is the minimum required version (v2.47.0) to function properly
 ---@return boolean
 function IsInventoryMinimumVersion()
     local version = GetResourceMetadata('ox_inventory', 'version', 0)
@@ -60,10 +60,7 @@ function IsInventoryMinimumVersion()
     if major > 2 then return true end
     if major < 2 then return false end
 
-    if minor > 46 then return true end
-    if minor < 46 then return false end
-
-    return patch > 1
+    return minor > 46
 end
 
 if not IsInventoryMinimumVersion() then
