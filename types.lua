@@ -8,3 +8,8 @@
 ---@field fromSlot table
 ---@field toSlot table | number
 ---@field count number
+
+---@class OpenInventoryPayload
+---@field source number
+---@field inventoryId string | number
+---@field inventoryType string
