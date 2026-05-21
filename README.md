@@ -8,6 +8,10 @@ A collection of server-side hooks that modify item behavior during inventory tra
 > This script will work best with `v2.47.0` of ox_inventory (when released), as it provides a more reliable method in acting on the item's metadata.
 > No changes will need to be made to this script, it'll detect if using the appropriate version and act accordingly.
 
+## How to remove a hook
+
+The system is designed to be entirely modular. To remove a hook, simply delete its corresponding file from the `server/hooks/` directory. The server will instantly stop integrating it upon the next resource restart.
+
 ## Hooks:
 
 <details>
