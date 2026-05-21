@@ -28,11 +28,7 @@ function RegisterHookAction(hookname, hookcb, posthookcb, patterns)
 
 	if not posthookcb then return end
 
-	local listner = AddEventHandler(hookid, function (success, payload)
-		if not success then return end
-
-		posthookcb(payload)
-	end)
+	local listner = AddEventHandler(hookid, posthookcb)
 
 	hookSideEffectListenersRecordSeeLongNamesAreFun[#hookSideEffectListenersRecordSeeLongNamesAreFun+1] = listner
 end
