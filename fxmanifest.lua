@@ -4,7 +4,7 @@ server_only "yes"
 description "ox inventory hooks"
 repository 'https://github.com/Maximus7474/mps-ox-invhooks'
 
-version 'v1.2.0'
+version 'v1.1.1'
 
 server_scripts {
 	"@ox_lib/init.lua",
