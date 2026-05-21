@@ -53,6 +53,27 @@ Because `ox_inventory` uses active timestamps for durability, the freezer hook c
 
 </details>
 
+<details>
+<summary>Admin Inventory Hook: limitless item spawning</summary>
+
+The Admin Inventory Hook creates a dynamic, secure "sandbox" stash containing every item registered on the server for administrators to pull items from easily.
+
+### How it works
+
+When an administrator runs the management command, the script dynamically scans the server's shared item list, ignores minor items (like identification), and populates a temporary stash with standard stacks of every available item. 
+
+To prevent admins from accidentally making the stash messy or destroying items, the hook explicitly blocks moving items *into* or *swapping* items within this specific inventory. It acts strictly as a "take-only" generation point.
+
+### Configuration
+
+* **Permissions:** Restricted by default to Ace group `group.admin` using the `hooks:admininv` Ace permission node.
+* **Commands:** Registered to `/adminitems`.
+
+### Limitations
+* `identification` item can not be added, as it will attempt to obtain player data from a stash inventory which will not work
+
+</details>
+
 ---
 
 ## Technical Implementation Notes
