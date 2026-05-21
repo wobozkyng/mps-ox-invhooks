@@ -3,8 +3,8 @@
 ---@field action 'move' | 'stack' | 'swap' | 'give'
 ---@field fromInventory table | string | number
 ---@field toInventory table | string | number
----@field fromType 'string'
----@field toType 'string'
+---@field fromType string
+---@field toType string
 ---@field fromSlot table
 ---@field toSlot table | number
 ---@field count number
