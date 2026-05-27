@@ -22,9 +22,9 @@ local hookSideEffectListenersRecordSeeLongNamesAreFun = {}
 ---@param hookname 'swapItems' | 'openInventory' | 'openShop' | 'createItem' | 'buyItem' | 'craftItem' | 'usingItem'
 ---@param hookcb function | nil
 ---@param posthookcb function | nil
----@param patterns table<string>
+---@param patterns table<string> | nil
 function RegisterHookAction(hookname, hookcb, posthookcb, patterns)
-	local hookid = exports.ox_inventory:registerHook(hookname, hookcb, { inventoryFilter = patterns })
+	local hookid = exports.ox_inventory:registerHook(hookname, hookcb, patterns and { inventoryFilter = patterns } or nil)
 
 	if not posthookcb then return end
 
