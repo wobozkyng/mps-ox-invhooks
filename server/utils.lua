@@ -56,10 +56,12 @@ function IsInventoryMinimumVersion()
     if major > 2 then return true end
     if major < 2 then return false end
 
-    return minor > 46
+    if minor < 47 then return false end
+
+	return patch > 1
 end
 
 if not IsInventoryMinimumVersion() then
     lib.print.warn('Invalid ox_inventory version!')
-    lib.print.warn('Update to v2.47.0+ ASAP to avoid conflicts.')
+    lib.print.warn('Update to v2.47.2+ ASAP to avoid conflicts.')
 end
