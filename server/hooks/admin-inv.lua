@@ -1,5 +1,7 @@
 Hooks = Hooks or {}
 
+local itemList = lib.require('@ox_inventory.modules.items.shared')
+
 local adminAcePerms = {
 	'hooks:admininv',
 }
@@ -8,7 +10,7 @@ for i = 1, #adminAcePerms do
 	lib.addAce('group.admin', adminAcePerms[i])
 end
 
-local adminInvStashId
+local openInventories = {}
 
 local function canUseAdminInv(src)
 	for j = 1, #adminAcePerms do
@@ -20,26 +22,37 @@ local function canUseAdminInv(src)
 	return false
 end
 
-local function registerAdminInvStash()
-	local itemList = lib.require('@ox_inventory.modules.items.shared')
+---@param search? string | false
+local function createAdminInvStash(search)
 	local itemCount = 0
 	local maxWeight = 0
 	local items = {}
 
-	lib.print.info('loaded inventory item list')
+	search = search and string.lower(search) or false
 
 	for item, data in pairs(itemList) do
 		if item == 'identification' then goto continue end
 
-		local count = 50
+		local addToInv = false
 
-		if data.stack == false then
-			count = 1
+		if search then
+			local startIdx, _ = string.find(string.lower(item), search, 1, true)
+			addToInv = not not startIdx
+		else
+			addToInv = true
 		end
 
-		items[#items+1] = { item, count }
-		maxWeight += data.weight * count
-		itemCount += 1
+		if addToInv then
+			local count = 50
+
+			if data.stack == false then
+				count = 1
+			end
+
+			items[#items+1] = { item, count }
+			maxWeight += data.weight * count
+			itemCount += 1
+		end
 
 	    ::continue::
 	end
@@ -51,12 +64,14 @@ local function registerAdminInvStash()
 		items = items,
 	})
 
-	adminInvStashId = id
+	return id
 end
 
 ---@param payload SwapItemsPayload
 ---@return boolean
 local function idealHandlePreSwap(payload)
+	if not lib.table.contains(openInventories, payload.fromInventory) then return true end
+
 	if not canUseAdminInv(payload.source) then
 		lib.print.warn(('Player %d tried to use admin inventory when not ace allowed !'):format(payload.source))
 		return false
@@ -99,6 +114,7 @@ end
 ---@param payload SwapItemsPayload
 ---@return boolean
 local function unidealHandleSwap(payload)
+	if not lib.table.contains(openInventories, payload.fromInventory) then return true end
 	if not canUseAdminInv(payload.source) then
 		lib.print.warn(('Player %d tried to use admin inventory when not ace allowed !'):format(payload.source))
 		return false
@@ -133,32 +149,23 @@ local function unidealHandleSwap(payload)
 end
 
 Hooks.AdminInvOpen = function ()
-	if not adminInvStashId then
-		registerAdminInvStash()
-
-		while not adminInvStashId do Wait(50) end
-	end
 
 	---@param payload OpenInventoryPayload
 	RegisterHookAction('openInventory', function (payload)
+		if not lib.table.contains(openInventories, payload.inventoryId) then return true end
+
 		if not canUseAdminInv(payload.source) then
 			lib.print.warn(('Player %d tried to open admin inventory when not ace allowed !'):format(payload.source))
 			return false
 		end
 
 		return true
-	end, nil, { adminInvStashId })
+	end)
 
 	lib.print.info('Initialized Admin inventory openInventory hook')
 end
 
 Hooks.AdminInvSwap = function ()
-	if not adminInvStashId then
-		registerAdminInvStash()
-
-		while not adminInvStashId do Wait(50) end
-	end
-
     local useIdeal = IsInventoryMinimumVersion()
     local before, after
 
@@ -169,7 +176,7 @@ Hooks.AdminInvSwap = function ()
         before = unidealHandleSwap
     end
 
-    RegisterHookAction('swapItems', before, after, { adminInvStashId })
+    RegisterHookAction('swapItems', before, after)
 
 	lib.print.info('Initialized Admin inventory swapItems hook')
 end
@@ -177,6 +184,23 @@ end
 lib.addCommand('adminitems', {
 	help = 'Open inventory with all items',
 	restricted = 'group.admin',
-}, function (source, args, raw)
-	exports.ox_inventory:forceOpenInventory(source, 'stash', adminInvStashId)
+	params = {{
+		name = "search",
+		help = "Item name to search for, will narrow the displayed items",
+		optional = true
+	}}
+}, function (source, args)
+	local invId = createAdminInvStash(args.search)
+	table.insert(openInventories, invId)
+	exports.ox_inventory:forceOpenInventory(source, 'stash', invId)
+end)
+
+---@param _ number
+---@param inventoryId string
+AddEventHandler('ox_inventory:closedInventory', function (_, inventoryId)
+	local isAdminInv, idx = lib.table.contains(openInventories, inventoryId)
+	if isAdminInv then
+		exports.ox_inventory:RemoveInventory(inventoryId)
+		table.remove(openInventories, idx)
+	end
 end)
