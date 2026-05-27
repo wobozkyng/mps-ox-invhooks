@@ -99,8 +99,9 @@ local function idealHandlePostSwap(success, payload)
 	local src = payload.source
 	local count = payload.count
 	local item = payload.fromSlot
+	local slot = ((type(payload.toSlot) == "number" and payload.toSlot or payload.toSlot.slot) --[[@as number]])
 
-	local addSuccess = exports.ox_inventory:AddItem(src, item.name, count)
+	local addSuccess = exports.ox_inventory:AddItem(src, item.name, count, nil, slot)
 
 	if not addSuccess then
 		lib.notify(payload.source, {
@@ -132,9 +133,10 @@ local function unidealHandleSwap(payload)
 	local src = payload.source
 	local count = payload.count
 	local item = payload.fromSlot
+	local slot = ((type(payload.toSlot) == "number" and payload.toSlot or payload.toSlot.slot) --[[@as number]])
 
 	Citizen.SetTimeout(100, function()
-        local addSuccess = exports.ox_inventory:AddItem(src, item.name, count)
+        local addSuccess = exports.ox_inventory:AddItem(src, item.name, count, nil, slot)
 
 		if not addSuccess then
 			lib.notify(payload.source, {
@@ -145,7 +147,7 @@ local function unidealHandleSwap(payload)
 		end
     end)
 
-	return true
+	return false
 end
 
 Hooks.AdminInvOpen = function ()
