@@ -1,6 +1,6 @@
 Hooks = Hooks or {}
 
-local gloveboxValidSeats = {
+local gloveboxSeatOverrides <const> = {
 	default = { -1, 0 },
 	-- only add vehicles IF you want to change the default -1 and 0 seats to access the glovebox
 	-- so if you only want driver or passenger and not both add them, if you want front and back seat add all
@@ -18,7 +18,7 @@ local function checkOpenInv(payload)
 	local entity = NetworkGetEntityFromNetworkId(payload.netId)
 	local vehicleModel = GetEntityModel(entity)
 	local playerPed = GetPlayerPed(payload.source)
-	local validSeats = gloveboxValidSeats[vehicleModel] or gloveboxValidSeats.default
+	local validSeats = gloveboxSeatOverrides[vehicleModel] or gloveboxSeatOverrides.default
 
 	for i = 1, #validSeats do
 		local seatedPed = GetPedInVehicleSeat(entity, validSeats[i])
@@ -33,5 +33,5 @@ Hooks.GloveBoxAccess = function ()
 
     RegisterHookAction('openInventory', checkOpenInv, nil, { "^glove[%w]+" })
 
-	lib.print.info('Initialized Admin inventory swapItems hook')
+	lib.print.info('Initialized Glovebox access openInventory hook')
 end
