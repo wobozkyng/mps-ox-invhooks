@@ -74,6 +74,26 @@ To prevent admins from accidentally making the stash messy or destroying items, 
 
 </details>
 
+<details>
+<summary>Glovebox access restriction</summary>
+
+A hook that prevents players in back seats to open the glovebox, **do note** that this will stop them from opening the inventory in it's entirety meaning they won't even be able view their inventory and move/use items, they'll only have access to their hotbar.
+
+If you want to simply hide the glovebox inventory, you would need to edit the source code of ox_inventory to allow hiding that second inventory.
+
+### How it works
+
+When opening the inventory in a vehicle with a glovebox, the `openInventory` hook will fire the registered callback. This will check if the player is seated in any of the valid seats (by default indices `-1` and `0` - driver & front passenger) and only if the player is found will it allow the glovebox to be accessed.
+
+### Configuration
+
+* **Seat Overrides:** At the top of the file, you can add in overrides for specific models to define what seats can access the glovebox.
+
+### Limitations
+* Players can not access their inventory if they can't access the glovebox.
+
+</details>
+
 ---
 
 ## Technical Implementation Notes
