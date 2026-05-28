@@ -13,3 +13,4 @@
 ---@field source number
 ---@field inventoryId string | number
 ---@field inventoryType string
+---@field netId? number only if glovebox / trunk
