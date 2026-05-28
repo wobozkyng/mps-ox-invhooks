@@ -5,7 +5,7 @@
 A collection of server-side hooks that modify item behavior during inventory transfers within `ox_inventory`.
 
 > [!IMPORTANT]
-> This script will work best with `v2.47.2` of ox_inventory (when released), as it provides a more reliable method in acting on the item's metadata.
+> This script will work best with `v2.47.2` of ox_inventory, as it provides a more reliable method in acting on the item's metadata.
 > No changes will need to be made to this script, it'll detect if using the appropriate version and act accordingly.
 
 ## How to remove a hook
@@ -15,7 +15,7 @@ The system is designed to be entirely modular. To remove a hook, simply delete i
 ## Hooks:
 
 <details>
-<summary>Fridge Hook: extend an items lifespan</summary>
+<summary>Fridge Hook: extend an items lifespan</summary><br/>
 
 The fridge hook extends the lifespan of degradable items while they are stored in specific containers.
 
@@ -35,7 +35,7 @@ When an item is moved into a "fridge," the script calculates the remaining life 
 </details>
 
 <details>
-<summary>Freezer Hook: freeze an items degradation</summary>
+<summary>Freezer Hook: freeze an items degradation</summary><br/>
 
 The Freezer Hook effectively "pauses" the degradation process entirely.
 
@@ -54,7 +54,7 @@ Because `ox_inventory` uses active timestamps for durability, the freezer hook c
 </details>
 
 <details>
-<summary>Admin Inventory Hook: limitless item spawning</summary>
+<summary>Admin Inventory Hook: limitless item spawning</summary><br/>
 
 The Admin Inventory Hook creates a dynamic, secure "sandbox" stash containing every item registered on the server for administrators to pull items from easily.
 
@@ -75,7 +75,7 @@ To prevent admins from accidentally making the stash messy or destroying items, 
 </details>
 
 <details>
-<summary>Glovebox access restriction</summary>
+<summary>Glovebox access restriction</summary><br/>
 
 A hook that prevents players in back seats to open the glovebox, **do note** that this will stop them from opening the inventory in it's entirety meaning they won't even be able view their inventory and move/use items, they'll only have access to their hotbar.
 
