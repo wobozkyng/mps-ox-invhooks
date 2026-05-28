@@ -67,7 +67,7 @@ To prevent admins from accidentally making the stash messy or destroying items, 
 ### Configuration
 
 * **Permissions:** Restricted by default to Ace group `group.admin` using the `hooks:admininv` Ace permission node.
-* **Commands:** Registered to `/adminitems`.
+* **Commands:** Registered to `/adminitems`, can be used with a search parameter to refine the displayed list of items.
 
 ### Limitations
 * `identification` item can not be added, as it will attempt to obtain player data from a stash inventory which will not work
